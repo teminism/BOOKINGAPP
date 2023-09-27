@@ -1,21 +1,12 @@
 import express from "express";
 import Hotel from "../model/Hotel.js"
 import { createError } from "../utils/error.js";
+import { createHotel } from "../controllers/hotelController.js";
 
 const router = express.Router();
 
 //CREATE
-router.post("/", async (req, res) => {
-    
-    const newHotel = new Hotel(req.body)
-
-    try{
-        const savedHotel = await newHotel.save()
-        res.status(200).json(savedHotel)
-    }catch(err){
-        res.status(500).json(err);
-    }
-})
+router.post("/", createHotel)
 //UPDATE
 router.put("/:id", async (req, res) => {
     try{
@@ -49,11 +40,11 @@ router.get("/:id", async (req, res) => {
 });
 //GET ALL
 router.get("/", async (req, res, next) => {
-    const failed = true;
-    if (failed) return next (createError(401, "You are not authenticated!"));
+    /*const failed = true;
+    if (failed) return next (createError(401, "You are not authenticated!"));*/
 
     try{
-        const hotels = await Hotel.findById("ssdxfhds");
+        const hotels = await Hotel.find();
         res.status(200).json(hotels);
     }catch(err){
         next(err);
